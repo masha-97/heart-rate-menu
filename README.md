@@ -22,9 +22,9 @@ macOS 菜单栏实时心率工具。它通过标准 Bluetooth Low Energy Heart R
 
 ## 展示
 
-<img src="docs/images/garmin-pulse-panel.png" alt="Garmin Pulse 私人版完整面板示例" width="360">
+<img src="docs/images/heart-rate-menu.png" alt="Heart Rate Menu 实际运行界面" width="360">
 
-上图是作者自用的 Garmin Pulse 完整面板，用于展示菜单栏健康数据工具的呈现效果。该截图中的压力、身体电量、活动和健康采样均**不属于本开源项目**；本项目只提供标准 BLE 实时心率。
+上图是 Heart Rate Menu 的实际运行界面：菜单栏显示当前心率，面板显示连接状态、实时读数和已发现的设备。本项目只提供标准 BLE 实时心率。
 
 ## 安装与运行
 
