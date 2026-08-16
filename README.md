@@ -20,6 +20,12 @@ macOS 菜单栏实时心率工具。它通过标准 Bluetooth Low Energy Heart R
 - 连接后才验证设备是否提供标准心率服务
 - 无网络请求、无账号、无云同步、无健康数据上传
 
+## 展示
+
+![Garmin Pulse 私人版完整面板示例](docs/images/garmin-pulse-panel.png)
+
+上图是作者自用的 Garmin Pulse 完整面板，用于展示菜单栏健康数据工具的呈现效果。该截图中的压力、身体电量、活动和健康采样均**不属于本开源项目**；本项目只提供标准 BLE 实时心率。
+
 ## 安装与运行
 
 需要 macOS 13 或更新版本，以及 Xcode Command Line Tools。
