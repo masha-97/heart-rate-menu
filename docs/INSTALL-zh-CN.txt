@@ -1,0 +1,18 @@
+Heart Rate Menu 安装说明
+
+1. 在访达中双击下载的 ZIP 文件。
+2. 打开解压出的 Heart-Rate-Menu-*-macos 文件夹。
+3. 将 Heart Rate Menu.app 拖到“应用程序”文件夹。
+4. 首次运行请在“应用程序”中按住 Control 点击 Heart Rate Menu.app，选择“打开”，再在系统确认窗口中点击“打开”。之后可正常双击启动。
+5. 若系统仍阻止启动，请打开“系统设置”->“隐私与安全性”，在页面底部找到 Heart Rate Menu，然后点击“仍要打开”。
+6. 首次进入应用时允许蓝牙访问，然后点击菜单栏的心形图标选择心率设备。
+
+说明：该应用不使用账号、云同步或网络请求。发布包尚未经过 Apple 公证，因此首次打开需要上述确认；这不会影响后续正常启动。
+
+English
+
+1. Unzip the downloaded archive in Finder.
+2. Move Heart Rate Menu.app to Applications.
+3. For the first launch, Control-click the app, choose Open, then confirm Open in the dialog.
+4. If macOS still blocks it, open System Settings > Privacy & Security and choose Open Anyway.
+5. Allow Bluetooth access when prompted.

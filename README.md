@@ -32,9 +32,9 @@
 
 ### 直接下载（推荐）
 
-在 [Releases](https://github.com/masha-97/heart-rate-menu/releases) 下载 `Heart-Rate-Menu-*-macos.zip`，解压后将 `Heart Rate Menu.app` 移到“应用程序”文件夹即可运行。
+在 [Releases](https://github.com/masha-97/heart-rate-menu/releases) 下载 `Heart-Rate-Menu-*-macos.zip`。解压后文件夹内附带《安装说明》，按说明将 `Heart Rate Menu.app` 移到“应用程序”文件夹。
 
-发布包目前使用 ad-hoc 签名，尚未经过 Apple 公证。首次运行如被 macOS 拦截，请在 Finder 中按住 Control 点击应用，选择“打开”并确认一次；之后可正常双击打开。
+发布包目前使用 ad-hoc 签名，尚未经过 Apple 公证。首次运行请在 Finder 中按住 Control 点击应用，选择“打开”并确认一次；之后可正常双击打开。若仍被拦截，可在“系统设置”->“隐私与安全性”中点击“仍要打开”。
 
 ### 从源码构建
 
