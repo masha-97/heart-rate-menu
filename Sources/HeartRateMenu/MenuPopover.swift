@@ -35,9 +35,29 @@ struct MenuPopover: View {
             Divider()
 
             VStack(alignment: .leading, spacing: 8) {
-                Text("心率设备")
-                    .font(.system(size: 11, weight: .semibold))
-                    .foregroundStyle(.secondary)
+                HStack {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("心率设备")
+                            .font(.system(size: 11, weight: .semibold))
+                            .foregroundStyle(.secondary)
+                        if central.hasRememberedDevice {
+                            Text("已绑定设备会在下次扫描时自动重连")
+                                .font(.system(size: 10))
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    Spacer()
+                    if central.hasRememberedDevice {
+                        Button {
+                            central.forgetDevice()
+                        } label: {
+                            Image(systemName: "link.badge.minus")
+                        }
+                        .buttonStyle(.borderless)
+                        .help("解除已绑定设备")
+                        .accessibilityLabel("解除已绑定设备")
+                    }
+                }
                 devicePicker
             }
             .padding(.vertical, 11)

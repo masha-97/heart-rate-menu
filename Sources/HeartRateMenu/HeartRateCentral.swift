@@ -42,6 +42,10 @@ final class HeartRateCentral: NSObject, ObservableObject {
         return String(currentHeartRate)
     }
 
+    var hasRememberedDevice: Bool {
+        rememberedDeviceID != nil
+    }
+
     var statusText: String {
         switch state {
         case .unavailable: return "蓝牙不可用"
@@ -80,19 +84,34 @@ final class HeartRateCentral: NSObject, ObservableObject {
         }
         devices = []
         peripherals = [:]
-        selectedDeviceID = nil
-        UserDefaults.standard.removeObject(forKey: selectedPeripheralKey)
+        currentHeartRate = nil
+        sampleDate = nil
         beginScan()
     }
 
     func selectDevice(_ identifier: UUID) {
         guard let candidate = peripherals[identifier] else { return }
+        // A deliberate new selection replaces the old binding only after subscription succeeds.
+        UserDefaults.standard.removeObject(forKey: selectedPeripheralKey)
         connect(candidate)
     }
 
+    func forgetDevice() {
+        UserDefaults.standard.removeObject(forKey: selectedPeripheralKey)
+        selectedDeviceID = nil
+        if let peripheral {
+            central?.cancelPeripheralConnection(peripheral)
+            self.peripheral = nil
+        }
+        currentHeartRate = nil
+        sampleDate = nil
+        devices = []
+        peripherals = [:]
+        beginScan()
+    }
+
     private func restoreKnownDevice() -> Bool {
-        guard let text = UserDefaults.standard.string(forKey: selectedPeripheralKey),
-              let identifier = UUID(uuidString: text),
+        guard let identifier = rememberedDeviceID,
               let candidate = central?.retrievePeripherals(withIdentifiers: [identifier]).first
         else { return false }
         peripherals[identifier] = candidate
@@ -134,6 +153,17 @@ final class HeartRateCentral: NSObject, ObservableObject {
         devices.removeAll { $0.id == device.id }
         devices.append(device)
         devices.sort { $0.rssi > $1.rssi }
+
+        // retrievePeripherals may not return a device after Bluetooth or app restarts.
+        // Matching its stable CoreBluetooth UUID during a normal scan makes the binding durable.
+        if candidate.identifier == rememberedDeviceID {
+            connect(candidate)
+        }
+    }
+
+    private var rememberedDeviceID: UUID? {
+        guard let text = UserDefaults.standard.string(forKey: selectedPeripheralKey) else { return nil }
+        return UUID(uuidString: text)
     }
 
     private func displayName(for candidate: CBPeripheral, advertisementData: [String: Any]?) -> String {
@@ -144,6 +174,14 @@ final class HeartRateCentral: NSObject, ObservableObject {
         guard candidate.identifier == peripheral?.identifier else { return }
         central?.cancelPeripheralConnection(candidate)
         peripheral = nil
+    }
+
+    private func rejectUnsupportedPeripheral(_ candidate: CBPeripheral) {
+        if candidate.identifier == rememberedDeviceID {
+            UserDefaults.standard.removeObject(forKey: selectedPeripheralKey)
+            selectedDeviceID = nil
+        }
+        rejectCurrentPeripheral(candidate)
     }
 }
 
@@ -209,7 +247,7 @@ extension HeartRateCentral: CBPeripheralDelegate {
         else {
             Task { @MainActor in
                 self.state = .unsupported
-                self.rejectCurrentPeripheral(peripheral)
+                self.rejectUnsupportedPeripheral(peripheral)
             }
             return
         }
@@ -226,7 +264,7 @@ extension HeartRateCentral: CBPeripheralDelegate {
         else {
             Task { @MainActor in
                 self.state = .unsupported
-                self.rejectCurrentPeripheral(peripheral)
+                self.rejectUnsupportedPeripheral(peripheral)
             }
             return
         }
@@ -241,7 +279,7 @@ extension HeartRateCentral: CBPeripheralDelegate {
         Task { @MainActor in
             guard error == nil, characteristic.isNotifying else {
                 self.state = .unsupported
-                self.rejectCurrentPeripheral(peripheral)
+                self.rejectUnsupportedPeripheral(peripheral)
                 return
             }
             UserDefaults.standard.set(peripheral.identifier.uuidString, forKey: self.selectedPeripheralKey)
