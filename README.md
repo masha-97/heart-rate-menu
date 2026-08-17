@@ -30,6 +30,14 @@
 
 ## 安装与运行
 
+### 直接下载（推荐）
+
+在 [Releases](https://github.com/masha-97/heart-rate-menu/releases) 下载 `Heart-Rate-Menu-*-macos.zip`，解压后将 `Heart Rate Menu.app` 移到“应用程序”文件夹即可运行。
+
+发布包目前使用 ad-hoc 签名，尚未经过 Apple 公证。首次运行如被 macOS 拦截，请在 Finder 中按住 Control 点击应用，选择“打开”并确认一次；之后可正常双击打开。
+
+### 从源码构建
+
 需要 macOS 13 或更新版本，以及 Xcode Command Line Tools。
 
 ```sh
@@ -38,6 +46,8 @@ cd heart-rate-menu
 ./scripts/build-app.sh
 open "build/Heart Rate Menu.app"
 ```
+
+维护者发布新版本时可运行 `./scripts/package-release.sh`，它会在 `dist/` 生成应用 ZIP 及对应的 SHA-256 校验文件。
 
 首次运行时，请在系统提示中允许蓝牙访问。点击菜单栏心形图标，选择设备一次；以后应用会记住这台设备并自动重连。若要换设备，点击“心率设备”旁的解除绑定图标，再重新扫描选择。
 
